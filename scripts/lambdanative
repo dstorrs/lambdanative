@@ -2,22 +2,27 @@
 # LambdaNative initialization script to be placed in system path
 
 # Override this with actual lambdanative location
-LAMBDANATIVE=
+LAMBDANATIVE=/usr/local/foo
+
+MYDIR=$( cd $(dirname $0) ; pwd -P ) # Directory of this file
+LNDIR=$( dirname $MYDIR )            # Top level directory of lambdanative code
+NOTSET_MSG="Make sure you edit the '$0' script and set the 'LAMBDANATIVE' variable to: '$LNDIR'"
 
 if [ "X$LAMBDANATIVE" = "X" ]; then
   echo "ERROR: this script has not been configured."
+  echo $NOTSET_MSG
   exit
 fi
 
-if [ ! -d $LAMBDANATIVE ] || [ ! -d $LAMBDANATIVE/apps ]; then
-  echo "ERROR: script misconfiguration: $LAMBDANATIVE not found"
+if [ ! -d $LAMBDANATIVE ] ; then
+  echo "ERROR: script misconfiguration: $LAMBDANATIVE not found or is not a directory"
+  echo $NOTSET_MSG
   exit
 fi
 
-if [ "X$LAMBDANATIVE" = "X$PWD" ]; then
-  echo "ERROR: Current location and SDKROOT are identical"
-  echo "       This would overwrite the configure script! Please"
-  echo "       create a new folder and run:  lambdanative init"
+if [ ! -d $LAMBDANATIVE/apps ]; then
+  echo "ERROR: script misconfiguration: $LAMBDANATIVE/apps not found"
+  echo $NOTSET_MSG
   exit
 fi
 
